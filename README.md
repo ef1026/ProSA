@@ -4,6 +4,12 @@ Official code release for:
 
 > How Do Document Parsers Break? Auditing Structural Vulnerability in Document Intelligence
 
+Paper:
+[arXiv:2605.19309](https://arxiv.org/abs/2605.19309) /
+[DOI:10.48550/arXiv.2605.19309](https://doi.org/10.48550/arXiv.2605.19309)
+
+Authors: Yue Chen, Yihao Wang, Ziyi Tang, Yongsen Zheng, and Keze Wang.
+
 This repository contains the ProSA experiment code, parser adapters, frozen
 attack plans, and downstream QA/retrieval metric pipeline. It intentionally
 does not redistribute third-party raw datasets, selected page images, COCO
@@ -148,5 +154,17 @@ weights, APIs, or local generated outputs. See `THIRD_PARTY_NOTICES.md`.
 
 ## Citation
 
-Please cite the associated paper. The arXiv identifier can be added here after
-the public preprint is assigned.
+If you use this code, please cite:
+
+```bibtex
+@misc{chen2026documentparsersbreak,
+  title         = {How Do Document Parsers Break? Auditing Structural Vulnerability in Document Intelligence},
+  author        = {Yue Chen and Yihao Wang and Ziyi Tang and Yongsen Zheng and Keze Wang},
+  year          = {2026},
+  eprint        = {2605.19309},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  doi           = {10.48550/arXiv.2605.19309},
+  url           = {https://arxiv.org/abs/2605.19309}
+}
+```

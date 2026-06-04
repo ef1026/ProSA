@@ -3,12 +3,39 @@ message: "If you use this software, please cite the associated paper."
 title: "ProSA: Probe-guided Structure-aware Auditing"
 type: software
 authors:
-  - name: "ProSA authors"
+  - family-names: "Chen"
+    given-names: "Yue"
+  - family-names: "Wang"
+    given-names: "Yihao"
+  - family-names: "Tang"
+    given-names: "Ziyi"
+  - family-names: "Zheng"
+    given-names: "Yongsen"
+  - family-names: "Wang"
+    given-names: "Keze"
 repository-code: "https://github.com/ef1026/ProSA"
+url: "https://github.com/ef1026/ProSA"
 license: MIT
+date-released: "2026-05-26"
 preferred-citation:
   type: article
   title: "How Do Document Parsers Break? Auditing Structural Vulnerability in Document Intelligence"
   authors:
-    - name: "ProSA authors"
+    - family-names: "Chen"
+      given-names: "Yue"
+    - family-names: "Wang"
+      given-names: "Yihao"
+    - family-names: "Tang"
+      given-names: "Ziyi"
+    - family-names: "Zheng"
+      given-names: "Yongsen"
+    - family-names: "Wang"
+      given-names: "Keze"
   year: 2026
+  doi: "10.48550/arXiv.2605.19309"
+  url: "https://arxiv.org/abs/2605.19309"
+  identifiers:
+    - type: doi
+      value: "10.48550/arXiv.2605.19309"
+    - type: url
+      value: "https://arxiv.org/abs/2605.19309"
