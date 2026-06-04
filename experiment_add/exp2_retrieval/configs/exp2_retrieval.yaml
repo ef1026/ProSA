@@ -1,0 +1,74 @@
+# Experiment 2 (retrieval) local parameters.
+# This file is owned by exp2_retrieval/ and is independent from
+# experiment_add/configs/exp2_retrieval.yaml (which is the canonical path
+# placeholder maintained by the rest of the project). PathManager still
+# resolves canonical output roots from experiment_add/configs/base.yaml;
+# this file only governs retrieval hyperparameters.
+
+experiment:
+  id: exp2_retrieval
+  name: Page-internal retrieval robustness under document perturbations
+  enabled: true
+
+inputs:
+  base_config: experiment_add/configs/base.yaml
+  qa_pairs_shared: experiment_add/outputs/shared/qa_pairs/qa_pairs_shared.jsonl
+
+corpus:
+  strategy: block_aware
+  target_chars: 400
+  min_chars: 80
+  max_chars: 700
+  overlap_chars: 80
+  pipelines:
+    - mineru
+    - ppstructure
+  conditions:
+    - clean
+    - area_matched_erasure
+    - structural_probe
+    - large_area_erasure
+
+retrieval:
+  ks: [1, 3, 5, 10]
+  default_k: 10
+  retrievers:
+    - bm25
+    - dense
+
+bm25:
+  k1: 1.5
+  b: 0.75
+
+dense:
+  enabled: true
+  model_name: sentence-transformers/all-MiniLM-L6-v2
+  cache_dir: /root/autodl-tmp/hf_cache
+  device: cpu
+  batch_size: 64
+  normalize_embeddings: true
+
+evaluation:
+  evidence_hit_relevance: evidence_text
+  answer_hit_relevance: gold_answer
+  k_for_drop: 5
+  parser_metrics_for_correlation:
+    - TOR
+    - B_SLR
+    - delta_CER
+
+outputs:
+  exp2_root: experiment_add/outputs/exp2_retrieval
+  corpora_root: experiment_add/outputs/exp2_retrieval/corpora
+  indexes_root: experiment_add/outputs/exp2_retrieval/indexes
+  retrieval_runs_root: experiment_add/outputs/exp2_retrieval/retrieval_runs
+  metrics_root: experiment_add/outputs/exp2_retrieval/metrics
+
+logging:
+  log_dir: experiment_add/logs/exp2_retrieval
+  run_log: experiment_add/logs/exp2_retrieval/run.log
+  audit_corpus_summary: experiment_add/logs/exp2_retrieval/audit_corpus_summary.md
+  audit_metrics_summary: experiment_add/logs/exp2_retrieval/audit_metrics_summary.md
+
+random:
+  seed: 42

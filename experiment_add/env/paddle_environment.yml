@@ -1,0 +1,34 @@
+# Conda environment file for the PP-StructureV3 / PaddleOCR worker.
+# The advdoc process spawns a subprocess that runs Python from THIS env.
+# Discovery is via:
+#   1. PPOCR_PYTHON env var (recommended; e.g. /root/miniconda3/envs/paddle/bin/python)
+#   2. configs/parser.yaml: paddle_python_path
+#   3. conda_env:paddle / conda_env:ppocr fallback
+#
+# Build with:
+#   conda env create -f experiment_add/env/paddle_environment.yml
+#   conda activate paddle
+#   pip install -r experiment_add/env/paddle_pip_freeze.txt
+#
+# Then export the python path so that the advdoc-side worker can find it:
+#   export PPOCR_PYTHON=$(conda run -n paddle which python)
+
+name: paddle
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      # Minimal placeholder; install the full pinned set with
+      # `pip install -r experiment_add/env/paddle_pip_freeze.txt`.
+      - PyYAML
+      - numpy
+      - paddleocr==3.4.1
+      - paddlepaddle-gpu==3.3.1
+      - paddlex==3.4.3
+      - opencv-contrib-python==4.10.0.84
+      - opencv-python-headless==4.13.0.92
+      - pyclipper==1.4.0
+      - shapely==2.1.2

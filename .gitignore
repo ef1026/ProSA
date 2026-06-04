@@ -1,0 +1,64 @@
+# Local environments
+.venv/
+.venv_fig/
+/venv/
+/env/
+
+# Python/runtime caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS/editor noise
+.DS_Store
+.ipynb_checkpoints/
+.vscode/
+.cursor/
+
+# Secrets and local API/cache logs
+.env
+.env.*
+*.log
+api_cache/
+api_logs/
+*_api_cache*
+*_api_log*
+
+# Matplotlib/HF/local caches
+.mpl-cache/
+.mplcache/
+.xdgcache/
+hf_cache/
+
+# Third-party datasets and local generated data
+data/*
+!data/
+!data/README.md
+experiment_add/data/page_manifest*.csv
+experiment_add/data/*report.md
+experiment_add/data/clean_pages/
+
+# Generated reproduction outputs and logs
+experiment/output/
+experiment/output_mineru/
+experiment_add/outputs/
+experiment_add/logs/
+/output*/
+
+# Heavy or derived binary artifacts
+*.pdf
+*.pkl
+*.pickle
+*.jpg
+*.jpeg
+*.png
+*.zip
+*.tar
+*.tar.gz
+
+# Ad-hoc temporary exports
+temp*
+check_*.py
+phase2_check.csv

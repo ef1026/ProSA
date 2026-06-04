@@ -1,0 +1,42 @@
+Generate extractive QA pairs from the given clean parsed document text.
+
+Important constraints:
+- Each answer must be copied verbatim from the provided text.
+- Each answer must be a short contiguous span.
+- Prefer answers of 2-10 words.
+- Avoid full-sentence answers.
+- Avoid long clauses and long captions.
+- Avoid empty answers.
+- Avoid answers that normalize to an empty string.
+- Avoid OCR-fragile spans with unusual symbols, broken formulas, or excessive punctuation.
+- Prefer robust spans likely to be recognized by different parsers:
+  - numeric values
+  - section titles
+  - dataset names
+  - method names
+  - model names
+  - table values
+  - short technical noun phrases
+- Do not generate yes/no questions.
+- Do not generate summary questions.
+- Do not use external knowledge.
+- Do not ask vague questions such as "What is discussed in the paper?"
+- The answer must appear exactly in the document text.
+- Return strict JSON list only.
+
+Each JSON item must have exactly these fields:
+{
+  "question": "...",
+  "answer": "...",
+  "evidence_text": "...",
+  "answer_type": "span/title/numeric/caption"
+}
+
+Constraints:
+- answer length: 2-10 words preferred, never more than 15 tokens
+- answer must appear verbatim in the given document text
+- answer must also appear verbatim in evidence_text
+- evidence_text must contain the exact answer substring
+- question must be answerable from evidence_text
+- evidence_text must be copied from the provided document text
+- if no valid extractive QA item can be generated, return []

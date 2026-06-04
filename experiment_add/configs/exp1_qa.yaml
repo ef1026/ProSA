@@ -1,0 +1,59 @@
+# Experiment 1 configuration: QA answering and QA evaluation only.
+
+experiment:
+  id: exp1_qa
+  name: QA robustness under document perturbations
+  enabled: false
+  dry_run: true
+
+inputs:
+  clean_parse_root: experiment_add/outputs/shared/clean_parse
+  perturbed_parse_root: experiment_add/outputs/shared/perturbed_parse
+  qa_pairs_shared: experiment_add/outputs/shared/qa_pairs/qa_pairs_shared.jsonl
+  qa_schema: experiment_add/shared/qa_generation/qa_schema.md
+  conditions:
+    - clean
+    - area_matched_erasure
+    - structural_probe
+    - large_area_erasure
+
+qa_generation:
+  enabled: false
+  ownership: shared
+  note: QA generation/filtering belongs to shared and produces experiment_add/outputs/shared/qa_pairs/qa_pairs_shared.jsonl. Experiment 1 only consumes that file for QA answering.
+
+answering:
+  enabled: false
+  provider_config: configs/deepseek.yaml
+  prompts_dir: exp1_qa/prompts
+  input_qa_pairs: experiment_add/outputs/shared/qa_pairs/qa_pairs_shared.jsonl
+  output_dir: experiment_add/outputs/exp1_qa/qa_runs
+
+context:
+  max_chars: 30000
+  allow_truncation: false
+  exclude_truncated_from_main: true
+
+evaluation:
+  enabled: false
+  metrics_dir: exp1_qa/metrics
+  output_dir: experiment_add/outputs/exp1_qa/metrics
+  metrics:
+    - exact_match
+    - normalized_f1
+    - answer_presence
+    - abstention_rate
+
+outputs:
+  exp1_root: experiment_add/outputs/exp1_qa
+  qa_runs_root: experiment_add/outputs/exp1_qa/qa_runs
+  metrics_root: experiment_add/outputs/exp1_qa/metrics
+
+logging:
+  log_dir: experiment_add/logs/exp1_qa
+  run_log: experiment_add/logs/exp1_qa/run.log
+  error_log: experiment_add/logs/exp1_qa/errors.log
+
+random:
+  seed: 42
+  reuse_base_seed: true

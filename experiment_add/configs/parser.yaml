@@ -1,0 +1,66 @@
+# Parser configuration for experiment_add.
+# The main process remains in the advdoc environment. Parser implementations are
+# reused from the original project; this file only describes orchestration.
+
+main_env: advdoc
+do_not_require_manual_env_switch: true
+default_parser: mineru
+parser_pool_module: experiment.gpu_pool.GPUParserPool
+parse_result_contract: parsers.base_parser.ParseResult
+
+mineru:
+  enabled: true
+  use_original_parser: true
+  parser_class: parsers.mineru_parser.MinerUParser
+  execution_mode: in_process
+  lang: en
+  formula_enable: true
+  table_enable: false
+  notes:
+    - Reuse the original MinerUParser.
+    - Requires the mineru package to be importable in the advdoc environment.
+
+ppstructure:
+  enabled: true
+  use_original_parser: true
+  parser_class: parsers.ppstructure_parser.PPStructureParser
+  use_worker_subprocess: true
+  execution_mode: subprocess_worker
+  worker_script: parsers/_ppstructure_worker.py
+  paddle_python_path: "${PPOCR_PYTHON:-}"
+  env_var_name: PPOCR_PYTHON
+  auto_detect_paddle_python: true
+  lang: en
+  use_gpu: true
+  show_log: false
+  discovery_order:
+    - PPOCR_PYTHON
+    - paddle_python_path
+    - conda_env:paddle
+    - conda_env:ppocr
+  worker_environment:
+    PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK: "True"
+    PADDLE_PDX_MODEL_SOURCE: BOS
+    HF_HUB_OFFLINE: "1"
+    TRANSFORMERS_OFFLINE: "1"
+  notes:
+    - Reuse the original PPStructureParser.
+    - The advdoc process sends images to the Paddle worker over line-delimited JSON.
+    - Users should not manually switch to the Paddle environment.
+
+outputs:
+  schema: experiment_add/shared/parsers/parser_output_schema.md
+  clean_parse_root: experiment_add/outputs/shared/clean_parse
+  clean_parse:
+    mineru: experiment_add/outputs/shared/clean_parse/mineru
+    ppstructure: experiment_add/outputs/shared/clean_parse/ppstructure
+  perturbed_parse_root: experiment_add/outputs/shared/perturbed_parse
+  perturbed_parse:
+    mineru: experiment_add/outputs/shared/perturbed_parse/mineru
+    ppstructure: experiment_add/outputs/shared/perturbed_parse/ppstructure
+  parser_metrics_root: experiment_add/outputs/shared/parser_metrics
+
+failure_policy:
+  baseline_strict: true
+  experiment_rows_strict: false
+  record_errors_to: experiment_add/logs/shared/parser_errors.log

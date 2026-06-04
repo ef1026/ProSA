@@ -1,0 +1,46 @@
+# Experiment 2 placeholder configuration.
+# Retrieval logic is intentionally not implemented in this phase.
+
+experiment:
+  id: exp2_retrieval
+  name: Retrieval robustness under document perturbations
+  enabled: false
+  status: reserved
+  dry_run: true
+
+inputs:
+  clean_parse_root: experiment_add/outputs/shared/clean_parse
+  perturbed_parse_root: experiment_add/outputs/shared/perturbed_parse
+  qa_pairs_shared: experiment_add/outputs/shared/qa_pairs/qa_pairs_shared.jsonl
+  conditions:
+    - clean
+    - area_matched_erasure
+    - structural_probe
+    - large_area_erasure
+
+retrieval:
+  enabled: false
+  retrievers_dir: exp2_retrieval/retrievers
+  scripts_dir: exp2_retrieval/scripts
+  corpora_root: experiment_add/outputs/exp2_retrieval/corpora
+  indexes_root: experiment_add/outputs/exp2_retrieval/indexes
+  retrieval_runs_root: experiment_add/outputs/exp2_retrieval/retrieval_runs
+  placeholder_only: true
+
+evaluation:
+  enabled: false
+  metrics_dir: exp2_retrieval/metrics
+  output_dir: experiment_add/outputs/exp2_retrieval/metrics
+  metrics: []
+
+outputs:
+  exp2_root: experiment_add/outputs/exp2_retrieval
+  corpora_root: experiment_add/outputs/exp2_retrieval/corpora
+  indexes_root: experiment_add/outputs/exp2_retrieval/indexes
+  retrieval_runs_root: experiment_add/outputs/exp2_retrieval/retrieval_runs
+  metrics_root: experiment_add/outputs/exp2_retrieval/metrics
+
+logging:
+  log_dir: experiment_add/logs/exp2_retrieval
+  run_log: experiment_add/logs/exp2_retrieval/run.log
+  error_log: experiment_add/logs/exp2_retrieval/errors.log

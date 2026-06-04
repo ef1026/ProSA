@@ -1,0 +1,96 @@
+# Global configuration shared by experiment_add tasks.
+
+project:
+  name: experiment_add
+  advdoc_root: .
+  experiment_add_root: experiment_add
+  description: Thin extension layer that reuses AdvDoc parser, perturbation, and metrics contracts.
+
+pipeline:
+  stage: scaffold
+  dry_run: true
+  run_parser: false
+  run_deepseek: false
+  run_experiments: false
+  reuse_original_modules: true
+  write_original_project_outputs: false
+
+condition:
+  default: clean
+  allowed:
+    - clean
+    - area_matched_erasure
+    - structural_probe
+    - large_area_erasure
+
+random:
+  seed: 42
+  deterministic_order: true
+
+paths:
+  configs_dir: experiment_add/configs
+  data_dir: experiment_add/data
+  prompts_dir: experiment_add/prompts
+  shared_dir: experiment_add/shared
+  exp1_qa_dir: experiment_add/exp1_qa
+  exp2_retrieval_dir: experiment_add/exp2_retrieval
+  schemas:
+    parser_output: experiment_add/shared/parsers/parser_output_schema.md
+    qa_pairs: experiment_add/shared/qa_generation/qa_schema.md
+    perturb_metadata: experiment_add/shared/perturb/perturb_metadata_schema.md
+
+data:
+  page_manifest_500: experiment_add/data/page_manifest_500.csv
+  page_manifest_debug20: experiment_add/data/page_manifest_debug20.csv
+  clean_page_dir: experiment_add/data/clean_pages
+
+outputs:
+  root: experiment_add/outputs
+  shared:
+    shared_root: experiment_add/outputs/shared
+    clean_parse_root: experiment_add/outputs/shared/clean_parse
+    clean_parse:
+      mineru: experiment_add/outputs/shared/clean_parse/mineru
+      ppstructure: experiment_add/outputs/shared/clean_parse/ppstructure
+    qa_pairs_root: experiment_add/outputs/shared/qa_pairs
+    qa_candidates_raw: experiment_add/outputs/shared/qa_pairs/qa_candidates_raw.jsonl
+    qa_pairs_shared: experiment_add/outputs/shared/qa_pairs/qa_pairs_shared.jsonl
+    perturbed_pages_root: experiment_add/outputs/shared/perturbed_pages
+    perturbed_pages:
+      area_matched_erasure: experiment_add/outputs/shared/perturbed_pages/area_matched_erasure
+      structural_probe: experiment_add/outputs/shared/perturbed_pages/structural_probe
+      large_area_erasure: experiment_add/outputs/shared/perturbed_pages/large_area_erasure
+    perturbed_parse_root: experiment_add/outputs/shared/perturbed_parse
+    perturbed_parse:
+      mineru: experiment_add/outputs/shared/perturbed_parse/mineru
+      ppstructure: experiment_add/outputs/shared/perturbed_parse/ppstructure
+    parser_metrics_root: experiment_add/outputs/shared/parser_metrics
+  exp1_qa:
+    exp1_root: experiment_add/outputs/exp1_qa
+    qa_runs_root: experiment_add/outputs/exp1_qa/qa_runs
+    metrics_root: experiment_add/outputs/exp1_qa/metrics
+  exp2_retrieval:
+    exp2_root: experiment_add/outputs/exp2_retrieval
+    corpora_root: experiment_add/outputs/exp2_retrieval/corpora
+    indexes_root: experiment_add/outputs/exp2_retrieval/indexes
+    retrieval_runs_root: experiment_add/outputs/exp2_retrieval/retrieval_runs
+    metrics_root: experiment_add/outputs/exp2_retrieval/metrics
+
+logs:
+  root: experiment_add/logs
+  shared: experiment_add/logs/shared
+  exp1_qa: experiment_add/logs/exp1_qa
+  exp2_retrieval: experiment_add/logs/exp2_retrieval
+
+shared_qa_generation:
+  enabled: false
+  ownership: shared
+  note: QA generation/filtering is shared and writes experiment_add/outputs/shared/qa_pairs/qa_pairs_shared.jsonl. Experiment 1 only consumes that file for QA answering.
+  source_clean_parse_root: experiment_add/outputs/shared/clean_parse
+  output_candidates_raw: experiment_add/outputs/shared/qa_pairs/qa_candidates_raw.jsonl
+  output_pairs_shared: experiment_add/outputs/shared/qa_pairs/qa_pairs_shared.jsonl
+  max_questions_per_page: 5
+  allowed_question_types:
+    - factual
+    - table_lookup
+    - layout_reference

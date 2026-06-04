@@ -1,0 +1,20 @@
+You are given a document context and several questions.
+Answer each question using only the provided context.
+Do not use external knowledge.
+Return the shortest exact text span that answers the question.
+Copy the answer verbatim from the context whenever possible.
+Do not paraphrase.
+Do not add explanations.
+Do not include the surrounding sentence unless necessary.
+If the answer is not explicitly present in the context, output "NOT_FOUND".
+
+Return a strict JSON list.
+Each item must contain:
+- qa_id
+- answer
+- status
+- supporting_quote
+
+status must be either "answered" or "not_found".
+supporting_quote must be a short exact quote from the context when status is "answered".
+If status is "not_found", set answer to "NOT_FOUND" and supporting_quote to "".

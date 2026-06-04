@@ -1,0 +1,42 @@
+# Conda environment file for the main `advdoc` runtime.
+# Used by: page manifest build, MinerU clean & perturbed parsing,
+#          perturbation generation, QA generation/filtering (DeepSeek),
+#          shared parser metrics, exp1 QA answering & evaluation,
+#          exp2 retrieval (BM25 + dense).
+#
+# The PP-StructureV3 inference itself runs in a *separate* conda env
+# (see `paddle_environment.yml`). The advdoc process talks to it through a
+# subprocess worker; users do not need to activate the paddle env manually.
+#
+# Build with:
+#   conda env create -f experiment_add/env/advdoc_environment.yml
+#   conda activate advdoc
+#   pip install -r experiment_add/env/advdoc_pip_freeze.txt
+#
+# The pip freeze file is the authoritative version lock; this YAML only
+# bootstraps Python + the channel set.
+
+name: advdoc
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      # Minimal placeholder; install the full pinned set with
+      # `pip install -r experiment_add/env/advdoc_pip_freeze.txt`.
+      - PyYAML
+      - numpy
+      - scikit-learn
+      - tqdm
+      # Parser stack
+      - mineru==2.7.6
+      # Torch + CUDA 12.8 wheels (bind to NVIDIA's index URL when installing)
+      # pip install torch==2.11.0+cu128 torchvision==0.26.0+cu128 torchaudio==2.11.0+cu128 \
+      #   --index-url https://download.pytorch.org/whl/cu128
+      # LLM client + retrieval stack
+      - openai==2.32.0
+      - rank_bm25==0.2.2
+      - sentence-transformers==3.0.1
+      - transformers==4.57.6

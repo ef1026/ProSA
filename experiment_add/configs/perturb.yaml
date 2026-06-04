@@ -1,0 +1,84 @@
+# Perturbation condition template for experiment_add.
+# Conditions map to existing AdvDoc probe concepts; no new perturbation logic is
+# implemented by this configuration.
+
+metadata_schema: experiment_add/shared/perturb/perturb_metadata_schema.md
+reuse_original_engine: experiment.engine.AttackEngine
+reuse_original_configs: experiment.config
+
+conditions:
+  clean:
+    enabled: true
+    description: Unmodified page. Used as the clean parse and QA baseline.
+    source: original_image
+    probe_plan: []
+    expected_tor: 0.0
+
+  area_matched_erasure:
+    enabled: true
+    description: Small-area erasure control matched by observed TOR during analysis.
+    source: original_probe_family
+    probe_type: P4
+    target_strategy: content
+    params:
+      area_ratio: 0.05
+      beta: 1.0
+    matching:
+      metric: TOR
+      strategy: posthoc_bucket
+      reference_condition: structural_probe
+      tolerance: null
+    original_config_reference:
+      phase: phase1a
+      example_ids:
+        - A07
+
+  structural_probe:
+    enabled: true
+    description: Thin structural perturbation using existing line or bridge probe families.
+    source: original_probe_family
+    preferred_probe_type: P5
+    allowed_probe_types:
+      - P1
+      - P2
+      - P5
+      - P6
+      - P10
+    target_strategy: bridge
+    params:
+      w: 3
+      l_ratio: 0.5
+    original_config_reference:
+      phase: phase1a
+      example_ids:
+        - A10
+        - A20
+
+  large_area_erasure:
+    enabled: true
+    description: Large white erasure control using existing P4 configuration.
+    source: original_probe_family
+    probe_type: P4
+    target_strategy: content
+    params:
+      area_ratio: 0.20
+      beta: 1.0
+    original_config_reference:
+      phase: phase1a
+      example_ids:
+        - A08
+        - A19
+
+outputs:
+  perturbed_pages_root: experiment_add/outputs/shared/perturbed_pages
+  perturbed_pages:
+    area_matched_erasure: experiment_add/outputs/shared/perturbed_pages/area_matched_erasure
+    structural_probe: experiment_add/outputs/shared/perturbed_pages/structural_probe
+    large_area_erasure: experiment_add/outputs/shared/perturbed_pages/large_area_erasure
+  perturbed_parse_root: experiment_add/outputs/shared/perturbed_parse
+  parser_metrics_root: experiment_add/outputs/shared/parser_metrics
+  logs_dir: experiment_add/logs/shared
+
+random:
+  seed: 42
+  reuse_base_seed: true

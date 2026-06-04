@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated paper."
+title: "ProSA: Probe-guided Structure-aware Auditing"
+type: software
+authors:
+  - name: "ProSA authors"
+repository-code: "https://github.com/ef1026/ProSA"
+license: MIT
+preferred-citation:
+  type: article
+  title: "How Do Document Parsers Break? Auditing Structural Vulnerability in Document Intelligence"
+  authors:
+    - name: "ProSA authors"
+  year: 2026
